@@ -1,6 +1,31 @@
+const { getAuth, clerkClient } = require('@clerk/express');
 const { catchAsync } = require('../utils/helpers');
+const User = require('../models/user.model');
+const AppError = require('../utils/appError');
 
-exports.protect = catchAsync((req, res, next) => {
-  console.log(req.auth);
+exports.protect = catchAsync(async (req, res, next) => {
+  const { userId } = getAuth(req);
+
+  if (!userId)
+    return next(
+      new AppError('You are not logged in ! Please log in to access.', 401)
+    );
+
+  const user = await User.findOne({ clerkId: userId });
+  // req.user = user;
+  req.userId = userId;
   next();
 });
+
+exports.checkRole = (...roles) => {
+  return catchAsync(async (req, res, next) => {
+    const {
+      publicMetadata: { role }
+    } = await clerkClient.users.getUser(req.userId);
+
+    if (!roles.includes(role)) {
+      return next(new AppError('Access denied', 403));
+    }
+    next();
+  });
+};

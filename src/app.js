@@ -1,6 +1,9 @@
 const morgan = require('morgan');
 const express = require('express');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const { clerkMiddleware } = require('@clerk/express');
+const AppError = require('./utils/appError');
 
 const {
   userRoutes,
@@ -15,7 +18,16 @@ const globalErrorHandler = require('./controllers/error.controller');
 
 const app = express();
 
+app.use(
+  cors({
+    // origin: process.env.CLIENT_URL,
+    origin: 'http://localhost:5173',
+    credentials: true
+  })
+);
+
 app.use(express.json());
+app.use(cookieParser());
 
 app.use(clerkMiddleware());
 
@@ -30,6 +42,11 @@ app.use('/api/v1/songs', songRoutes);
 app.use('/api/v1/albums', albumRoutes);
 app.use('/api/v1/stats', statsRoutes);
 
+app.all(/.*/, (req, res, next) => {
+  next(
+    new AppError(`Can't find ${req.originalUrl} on this server (●'◡'●)`, 404)
+  );
+});
 app.use(globalErrorHandler);
 
 module.exports = app;

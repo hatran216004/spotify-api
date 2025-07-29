@@ -20,6 +20,7 @@ class ErrorService {
   }
 
   sendErrorDev(error, req, res) {
+    console.log(error);
     if (req.originalUrl.startsWith('/api')) {
       return res.status(error.statusCode).json({
         error,
