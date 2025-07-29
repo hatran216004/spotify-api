@@ -11,6 +11,8 @@ const {
   adminRoutes
 } = require('./routes/index');
 
+const globalErrorHandler = require('./controllers/error.controller');
+
 const app = express();
 
 app.use(express.json());
@@ -27,5 +29,7 @@ app.use('/api/v1/admin', adminRoutes);
 app.use('/api/v1/songs', songRoutes);
 app.use('/api/v1/albums', albumRoutes);
 app.use('/api/v1/stats', statsRoutes);
+
+app.use(globalErrorHandler);
 
 module.exports = app;

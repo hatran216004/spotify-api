@@ -1,6 +1,6 @@
 const { catchAsync } = require('../utils/helpers');
 
-exports.getAllusers = catchAsync(async (req, res, next) => {
+exports.getAllUsers = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: 'success',
     data: null

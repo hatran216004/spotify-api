@@ -18,10 +18,6 @@ const userSchema = new mongoose.Schema(
       required: [true, 'A user must have a username'],
       unique: true
     },
-    fullName: {
-      type: String,
-      required: [true, 'A user must have a fullName']
-    },
     likedSongs: {
       type: [mongoose.Schema.ObjectId],
       ref: 'Song',
