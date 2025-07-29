@@ -42,7 +42,7 @@ class ErrorService {
       }
 
       return res.status(500).json({
-        message: 'Something went very wrong',
+        message: 'Internal server error',
         status: 'error'
       });
     }

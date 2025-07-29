@@ -35,15 +35,15 @@ const songSchema = new mongoose.Schema(
       type: [String],
       default: []
     },
-    lyrics: {
-      type: String,
-      default: ''
-    },
+    lyrics: String,
     playCount: {
       type: Number,
       default: 0
     },
-    releaseDate: Date
+    releaseDate: {
+      type: Date,
+      default: Date.now()
+    }
   },
   { timestamps: true }
 );
