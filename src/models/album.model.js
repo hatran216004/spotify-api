@@ -14,7 +14,7 @@ const albumSchema = new mongoose.Schema(
     releaseDate: Date,
     coverImage: {
       type: String,
-      required: [true, 'A album must have a artistId']
+      default: 'album-default.jpg'
     },
     genre: [String]
   },

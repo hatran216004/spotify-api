@@ -1,4 +1,4 @@
-const errorService = require('../services/error.service');
+const { errorService } = require('../services');
 
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;

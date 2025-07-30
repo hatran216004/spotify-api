@@ -23,8 +23,7 @@ const songSchema = new mongoose.Schema(
     },
     audioUrl: {
       type: String,
-      required: [true, 'A song must have a audioUrl'],
-      unique: true
+      required: [true, 'A song must have a audioUrl']
     },
     duration: {
       type: Number,
@@ -33,9 +32,13 @@ const songSchema = new mongoose.Schema(
     },
     genres: {
       type: [String],
+      enum: {
+        values: ['pop', 'rock', 'edm', 'rap', 'ballad', 'jazz', 'lofi'],
+        message:
+          'Genres is either: online, pop, rock, edm, rap, ballad, jazz, lofi'
+      },
       default: []
     },
-    lyrics: String,
     playCount: {
       type: Number,
       default: 0
@@ -47,6 +50,11 @@ const songSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+songSchema.pre(/^find/, function (next) {
+  this.populate('artistId', 'name').populate('albumId', 'title');
+  next();
+});
 
 const Song = mongoose.model('Song', songSchema);
 module.exports = Song;

@@ -3,14 +3,19 @@ const Song = require('../models/song.model');
 class SongService {
   async createOne(data) {
     const song = await Song.create(data);
+
     return song;
   }
 
-  deleteSong() {
+  async getAll() {
+    return [];
+  }
+
+  deleteOne() {
     //
   }
 
-  updateSong() {
+  updateOne() {
     //
   }
 }
