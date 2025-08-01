@@ -1,12 +1,22 @@
 const express = require('express');
 const {
   reorderPlaylist,
-  createPlaylist
+  createPlaylist,
+  updatePlaylist,
+  deletePlaylist,
+  getAllPlaylists,
+  getPlaylist
 } = require('../controllers/playlist.controller');
 
 const router = express.Router();
 
 router.patch('/:id/reorder', reorderPlaylist);
-router.post('/', createPlaylist);
+router.route('/').get(getAllPlaylists).post(createPlaylist);
+
+router
+  .route('/:id')
+  .get(getPlaylist)
+  .patch(updatePlaylist)
+  .delete(deletePlaylist);
 
 module.exports = router;
