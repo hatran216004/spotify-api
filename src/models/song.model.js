@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const Lyric = require('./lyric.model');
 
 const songSchema = new mongoose.Schema(
   {
@@ -54,6 +55,10 @@ const songSchema = new mongoose.Schema(
 songSchema.pre(/^find/, function (next) {
   this.populate('artistId', 'name').populate('albumId', 'title');
   next();
+});
+
+songSchema.post('findOneAndDelete', async function (doc) {
+  await Lyric.findOneAndDelete({ songId: doc.id });
 });
 
 const Song = mongoose.model('Song', songSchema);

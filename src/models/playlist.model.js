@@ -15,10 +15,19 @@ const playlistSchema = new mongoose.Schema(
       type: Boolean,
       default: true
     },
-    songs: {
-      type: [mongoose.Schema.ObjectId],
-      ref: 'Song'
-    },
+    songs: [
+      {
+        songId: {
+          type: mongoose.Schema.ObjectId,
+          ref: 'Song'
+        },
+        order: {
+          type: Number,
+          required: [true, 'Song need order field for drag and drop'],
+          min: 0
+        }
+      }
+    ],
     totalDuration: {
       type: Number,
       default: 0
@@ -30,6 +39,11 @@ const playlistSchema = new mongoose.Schema(
     timestamps: true
   }
 );
+
+playlistSchema.pre(/^find/, function (next) {
+  this.populate('songs');
+  next();
+});
 
 const Playlist = mongoose.model('Playlist', playlistSchema);
 module.exports = Playlist;

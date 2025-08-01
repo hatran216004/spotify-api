@@ -4,6 +4,7 @@ const songRoutes = require('./song.route');
 const statsRoutes = require('./stats.route');
 const albumRoutes = require('./album.route');
 const adminRoutes = require('./admin.route');
+const playlistRoutes = require('./playlist.route');
 
 module.exports = {
   userRoutes,
@@ -11,5 +12,6 @@ module.exports = {
   songRoutes,
   statsRoutes,
   albumRoutes,
-  adminRoutes
+  adminRoutes,
+  playlistRoutes
 };
