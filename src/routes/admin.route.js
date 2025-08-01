@@ -13,7 +13,9 @@ const {
 const {
   createArtist,
   deleteArtist,
-  updateArtist
+  updateArtist,
+  resizeAndUploadImg,
+  uploadFilesImg
 } = require('../controllers/artist.controller');
 
 const {
@@ -36,8 +38,11 @@ router.post(
 );
 router.route('/songs/:id').patch(updateSong).delete(deleteSong);
 
-router.post('/artists', createArtist);
-router.route('/artists/:id').patch(updateArtist).delete(deleteArtist);
+router.post('/artists', uploadFilesImg, resizeAndUploadImg, createArtist);
+router
+  .route('/artists/:id')
+  .patch(uploadFilesImg, resizeAndUploadImg, updateArtist)
+  .delete(deleteArtist);
 
 router.post('/albums', createAlbum);
 router

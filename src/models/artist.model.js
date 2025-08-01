@@ -6,10 +6,7 @@ const artistSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Artist must have a name']
     },
-    bio: {
-      type: String,
-      default: ''
-    },
+    bio: String,
     avatarUrl: {
       type: String,
       required: [true, 'Artist must have a avatarUrl']

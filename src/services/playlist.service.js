@@ -2,6 +2,17 @@ const { Playlist } = require('../models');
 const AppError = require('../utils/appError');
 
 class PlaylistService {
+  async createOne(data) {
+    const playlistCount = await Playlist.countDocuments({
+      userId: data.userId
+    });
+    const name = data.name
+      ? data.name
+      : `Danh sách phát của tôi #${playlistCount + 1}`;
+    const playlist = await Playlist.create({ ...data, name });
+    return playlist;
+  }
+
   async reorderPlaylist(playlistId, reorderData) {
     const { fromIndex, toIndex, songId } = reorderData;
 
@@ -34,10 +45,38 @@ class PlaylistService {
     const [movedSong] = songs.splice(fromIndex, 1);
     songs.splice(toIndex, 0, movedSong);
 
-    songs.forEach((song, index) => ({ ...song, order: index }));
+    songs.forEach((song, index) => {
+      song.order = index;
+    });
+
     const result = await playlist.save();
 
     return result;
+  }
+
+  async deleteSongFromPlaylist(playlistId, songId) {
+    const playlist = await Playlist.findById(playlistId);
+
+    if (!playlist)
+      throw new AppError(`No playlist found with id: ${playlistId}`, 404);
+
+    const { songs } = playlist;
+
+    const songIndex = songs.findIndex(
+      (song) => song.songId.toString() === songId
+    );
+
+    if (songIndex === -1)
+      throw new AppError(`No song found with id: ${songId}`, 404);
+
+    songs.splice(songIndex, 1);
+    songs.forEach((song, index) => {
+      song.order = index;
+    });
+
+    const playlistUpdated = await playlist.save();
+
+    return playlistUpdated;
   }
 }
 

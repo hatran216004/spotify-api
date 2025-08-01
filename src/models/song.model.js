@@ -53,7 +53,7 @@ const songSchema = new mongoose.Schema(
 );
 
 songSchema.pre(/^find/, function (next) {
-  this.populate('artistId', 'name').populate('albumId', 'title');
+  this.populate('artistId', 'name bio avatarUrl').populate('albumId', 'title');
   next();
 });
 

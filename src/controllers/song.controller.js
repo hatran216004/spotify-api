@@ -3,8 +3,7 @@ const { Song } = require('../models');
 const { catchAsync, sendSuccess } = require('../utils');
 const { getOne, deleteOne, getAll, updateOne } = require('./base.controller');
 const { fromLRC } = require('../utils');
-const { songService, lyricService } = require('../services');
-const fileService = require('../services/file.service');
+const { songService, lyricService, fileService } = require('../services');
 
 exports.uploadSongFiles = upload.fields([
   { name: 'audio', maxCount: 1 },
@@ -55,6 +54,20 @@ exports.createSong = catchAsync(async (req, res, next) => {
     content: req.body.lyrics
   });
   sendSuccess(res, { song }, 201);
+});
+
+exports.getTrendingSongs = catchAsync(async (req, res, next) => {
+  const songs = await Song.find().sort('-playCount').limit(6);
+  sendSuccess(res, { songs }, 200);
+});
+
+exports.getMadeForYouSongs = catchAsync(async (req, res, next) => {
+  const songs = await Song.aggregate([
+    {
+      $sample: { size: 4 }
+    }
+  ]);
+  sendSuccess(res, { songs }, 200);
 });
 
 exports.getAllSongs = getAll(Song);

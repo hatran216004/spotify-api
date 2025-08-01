@@ -12,7 +12,9 @@ const {
   statsRoutes,
   albumRoutes,
   adminRoutes,
-  playlistRoutes
+  playlistRoutes,
+  artistRoutes,
+  searchRoutes
 } = require('./routes/index');
 
 const globalErrorHandler = require('./controllers/error.controller');
@@ -44,6 +46,8 @@ app.use('/api/v1/songs', songRoutes);
 app.use('/api/v1/albums', albumRoutes);
 app.use('/api/v1/stats', statsRoutes);
 app.use('/api/v1/playlists', playlistRoutes);
+app.use('/api/v1/artists', artistRoutes);
+app.use('/api/v1/search', searchRoutes);
 
 app.all(/.*/, (req, res, next) => {
   next(

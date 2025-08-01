@@ -7,5 +7,4 @@ exports.getSongLyrics = catchAsync(async (req, res, next) => {
 });
 
 exports.updateSongLyrics = catchAsync(async (req, res, next) => {});
-
 exports.deleteSongLyrics = catchAsync(async (req, res, next) => {});

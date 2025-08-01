@@ -1,8 +1,9 @@
 const express = require('express');
-const { getAlbum } = require('../controllers/album.controller');
+const { getAlbum, getAllAlbums } = require('../controllers/album.controller');
 
 const router = express.Router();
 
 router.get('/:id', getAlbum);
+router.get('/', getAllAlbums);
 
 module.exports = router;

@@ -1,19 +1,7 @@
 const { Playlist } = require('../models');
 const playlistService = require('../services/playlist.service');
 const { catchAsync, sendSuccess } = require('../utils');
-const {
-  createOne,
-  updateOne,
-  deleteOne,
-  getAll,
-  getOne
-} = require('./base.controller');
-
-exports.getAllPlaylists = getAll(Playlist);
-exports.getPlaylist = getOne(Playlist);
-exports.createPlaylist = createOne(Playlist);
-exports.updatePlaylist = updateOne(Playlist);
-exports.deletePlaylist = deleteOne(Playlist);
+const { updateOne, deleteOne, getAll, getOne } = require('./base.controller');
 
 exports.reorderPlaylist = catchAsync(async (req, res, next) => {
   const playlist = await playlistService.reorderPlaylist(
@@ -22,3 +10,26 @@ exports.reorderPlaylist = catchAsync(async (req, res, next) => {
   );
   sendSuccess(res, { playlist }, 200);
 });
+
+exports.deleteSongFromPlaylist = catchAsync(async (req, res, next) => {
+  const { id: playlistId, songId } = req.params;
+  const playlist = await playlistService.deleteSongFromPlaylist(
+    playlistId,
+    songId
+  );
+
+  sendSuccess(res, { playlist }, 200);
+});
+
+exports.createPlaylist = catchAsync(async (req, res, next) => {
+  const playlist = await playlistService.createOne({
+    ...req.body,
+    userId: req.user.id
+  });
+  sendSuccess(res, { playlist }, 201);
+});
+
+exports.getAllPlaylists = getAll(Playlist);
+exports.getPlaylist = getOne(Playlist);
+exports.updatePlaylist = updateOne(Playlist);
+exports.deletePlaylist = deleteOne(Playlist);

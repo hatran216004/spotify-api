@@ -5,13 +5,17 @@ const {
   updatePlaylist,
   deletePlaylist,
   getAllPlaylists,
-  getPlaylist
+  getPlaylist,
+  deleteSongFromPlaylist
 } = require('../controllers/playlist.controller');
 
 const router = express.Router();
 
 router.patch('/:id/reorder', reorderPlaylist);
+
 router.route('/').get(getAllPlaylists).post(createPlaylist);
+
+router.delete('/:id/songs/:songId', deleteSongFromPlaylist);
 
 router
   .route('/:id')

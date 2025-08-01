@@ -22,3 +22,11 @@ exports.fromLRC = (lrcContent) => {
 
   return lyrics;
 };
+
+exports.filterBody = (...body) => {
+  console.log(body);
+  return (req, res, next) => {
+    //
+    next();
+  };
+};
