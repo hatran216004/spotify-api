@@ -9,9 +9,10 @@ const { protect } = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
+router.get('/', getAllPlaylists);
+
 router.use(protect);
 
-router.route('/').get(getAllPlaylists);
 router
   .route('/:id')
   .get(getPlaylist)
