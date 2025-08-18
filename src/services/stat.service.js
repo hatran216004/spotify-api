@@ -1,14 +1,14 @@
-const { Song, Artist, Album } = require('../models');
+const { Track, Artist, Album } = require('../models');
 
 class StatService {
   async getStats() {
-    const [totalSongs, totalArtist, totalAlbums] = await Promise.all([
-      Song.countDocuments(),
+    const [totalTracks, totalArtist, totalAlbums] = await Promise.all([
+      Track.countDocuments(),
       Artist.countDocuments(),
       Album.countDocuments()
     ]);
 
-    return { totalSongs, totalArtist, totalAlbums };
+    return { totalTracks, totalArtist, totalAlbums };
   }
 }
 

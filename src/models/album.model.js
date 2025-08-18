@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const Song = require('./song.model');
+const Track = require('./track.model');
 const Lyric = require('./lyric.model');
 
 const albumSchema = new mongoose.Schema(
@@ -11,7 +11,8 @@ const albumSchema = new mongoose.Schema(
     artistId: {
       type: mongoose.Schema.ObjectId,
       ref: 'Artist',
-      required: [true, 'A album must have a artistId']
+      required: [true, 'A album must have a artistId'],
+      alias: 'artist'
     },
     releaseDate: Date,
     coverImage: {
@@ -22,23 +23,37 @@ const albumSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        ret.artist = ret.artistId;
+        delete ret.artistId;
+        return ret;
+      }
+    },
+    toObject: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        ret.artist = ret.artistId;
+        delete ret.artistId;
+        return ret;
+      }
+    }
   }
 );
 
-albumSchema.virtual('songs', {
-  ref: 'Song',
+albumSchema.virtual('tracks', {
+  ref: 'Track',
   foreignField: 'albumId',
   localField: '_id'
 });
 
 albumSchema.post('findOneAndDelete', async function (doc) {
-  const songs = await Song.find({ albumId: doc.id });
-  const songIds = songs.map((song) => song.id);
+  const tracks = await Track.find({ albumId: doc.id });
+  const trackIds = tracks.map((track) => track.id);
 
-  await Song.deleteMany({ albumId: doc.id });
-  await Lyric.deleteMany({ songId: { $in: songIds } });
+  await Track.deleteMany({ albumId: doc.id });
+  await Lyric.deleteMany({ trackId: { $in: trackIds } });
 });
 
 const Album = mongoose.model('Album', albumSchema);

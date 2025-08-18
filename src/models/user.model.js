@@ -18,20 +18,23 @@ const userSchema = new mongoose.Schema(
       required: [true, 'A user must have a username'],
       unique: true
     },
-    likedSongs: {
-      type: [mongoose.Schema.ObjectId],
-      ref: 'Song',
+    likedTracks: {
+      type: [
+        {
+          trackId: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Track',
+            alias: 'track'
+          },
+          addedAt: {
+            type: Date,
+            default: Date.now
+          }
+        }
+      ],
       default: []
     },
-    following: {
-      type: [mongoose.Schema.ObjectId],
-      ref: 'Artist',
-      default: []
-    },
-    avatarUrl: {
-      type: String,
-      default: 'user-default.jpg'
-    },
+    avatarUrl: String,
     clerkId: {
       type: String,
       required: [true, 'A user must have a clerkId'],

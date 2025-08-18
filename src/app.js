@@ -8,13 +8,14 @@ const AppError = require('./utils/appError');
 const {
   userRoutes,
   authRoutes,
-  songRoutes,
+  trackRoutes,
   statsRoutes,
   albumRoutes,
   adminRoutes,
   playlistRoutes,
   artistRoutes,
-  searchRoutes
+  searchRoutes,
+  meRoutes
 } = require('./routes/index');
 
 const globalErrorHandler = require('./controllers/error.controller');
@@ -42,12 +43,13 @@ if (process.env.NODE_ENV === 'development') {
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/admin', adminRoutes);
-app.use('/api/v1/songs', songRoutes);
+app.use('/api/v1/tracks', trackRoutes);
 app.use('/api/v1/albums', albumRoutes);
 app.use('/api/v1/stats', statsRoutes);
 app.use('/api/v1/playlists', playlistRoutes);
 app.use('/api/v1/artists', artistRoutes);
 app.use('/api/v1/search', searchRoutes);
+app.use('/api/v1/me', meRoutes);
 
 app.all(/.*/, (req, res, next) => {
   next(

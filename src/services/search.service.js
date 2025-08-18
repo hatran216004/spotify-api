@@ -1,4 +1,4 @@
-const { Artist, Album, Playlist, Song } = require('../models');
+const { Artist, Album, Playlist, Track } = require('../models');
 
 class SearchService {
   getSearchConfig(q) {
@@ -23,9 +23,9 @@ class SearchService {
       return { result: playlists, type: 'playlists' };
     }
 
-    const songs = await Song.find({ title: searchConfig });
-    if (songs.length) {
-      return { result: songs, type: 'songs' };
+    const tracks = await Track.find({ title: searchConfig });
+    if (tracks.length) {
+      return { result: tracks, type: 'tracks' };
     }
 
     return { result: [], type: 'none' };

@@ -1,0 +1,30 @@
+[
+  {
+    "title": "Nấu Ăn Cho Em",
+    "artistId": "6896ed262f13dbf606bc9b73",
+    "releaseDate": "2021-05-09T00:00:00.000Z",
+    "coverImage": "denvau-nauanchoem.jpg",
+    "genre": ["Rap", "Hip-hop"]
+  },
+  {
+    "title": "Chúng Ta Của Hiện Tại",
+    "artistId": "6896ed262f13dbf606bc9b72",
+    "releaseDate": "2020-12-20T00:00:00.000Z",
+    "coverImage": "sontung-ctcht.jpg",
+    "genre": ["Pop", "Ballad"]
+  },
+  {
+    "title": "Lạ Lùng",
+    "artistId": "68a1dbd38346fdb19ecf093b",
+    "releaseDate": "2018-01-12T00:00:00.000Z",
+    "coverImage": "vu-lalung.jpg",
+    "genre": ["Indie", "Pop"]
+  },
+  {
+    "title": "Nắng Có Còn Xuân",
+    "artistId": "689b552f5ec18e2779d774f6",
+    "releaseDate": "2012-02-01T00:00:00.000Z",
+    "coverImage": "miule-nangcoconxuan.jpg",
+    "genre": ["Pop"]
+  }
+]

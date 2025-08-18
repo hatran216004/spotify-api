@@ -1,0 +1,29 @@
+[
+  {
+    "name": "Lofi Chill Vibes",
+    "userId": "6891e466bb488bad0aa74a11",
+    "isPublic": true,
+    "tracks": [],
+    "totalDuration": 7200,
+    "coverImage": "https://picsum.photos/300?random=1",
+    "description": "Nhạc lofi thư giãn học tập và làm việc"
+  },
+  {
+    "name": "Top Hits Vietnam",
+    "userId": "6891e466bb488bad0aa74a11",
+    "isPublic": true,
+    "tracks": [],
+    "totalDuration": 5400,
+    "coverImage": "https://picsum.photos/300?random=2",
+    "description": "Những bản hit hot nhất tại Việt Nam"
+  },
+  {
+    "name": "EDM Party Mix",
+    "userId": "6891e466bb488bad0aa74a11",
+    "isPublic": false,
+    "tracks": [],
+    "totalDuration": 8900,
+    "coverImage": "https://picsum.photos/300?random=3",
+    "description": "Những bài hát chill nhẹ nhàng cho buổi tối"
+  }
+]

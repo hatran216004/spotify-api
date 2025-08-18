@@ -1,10 +1,10 @@
 const baseService = require('../services/base.service');
 const { catchAsync, sendSuccess } = require('../utils/index');
 
-exports.getAll = (Model) =>
+exports.getAll = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
     const { currentPage, data, modelName, pageCount } =
-      await baseService.getAll(Model, req.query);
+      await baseService.getAll(Model, req.query, popOptions);
 
     sendSuccess(
       res,

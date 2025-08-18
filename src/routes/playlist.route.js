@@ -1,22 +1,17 @@
 const express = require('express');
 const {
-  reorderPlaylist,
-  createPlaylist,
   updatePlaylist,
   deletePlaylist,
-  getAllPlaylists,
   getPlaylist,
-  deleteSongFromPlaylist
+  getAllPlaylists
 } = require('../controllers/playlist.controller');
+const { protect } = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
-router.patch('/:id/reorder', reorderPlaylist);
+router.use(protect);
 
-router.route('/').get(getAllPlaylists).post(createPlaylist);
-
-router.delete('/:id/songs/:songId', deleteSongFromPlaylist);
-
+router.route('/').get(getAllPlaylists);
 router
   .route('/:id')
   .get(getPlaylist)

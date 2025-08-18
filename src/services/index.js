@@ -1,4 +1,4 @@
-const songService = require('./song.service');
+const trackService = require('./track.service');
 const artistService = require('./artist.service');
 const albumService = require('./album.service');
 const baseService = require('./base.service');
@@ -8,9 +8,10 @@ const lyricService = require('./lyric.service');
 const fileService = require('./file.service');
 const statService = require('./stat.service');
 const searchService = require('./search.service');
+const playerServices = require('./player.service');
 
 module.exports = {
-  songService,
+  trackService,
   artistService,
   albumService,
   baseService,
@@ -19,5 +20,6 @@ module.exports = {
   lyricService,
   fileService,
   statService,
-  searchService
+  searchService,
+  playerServices
 };

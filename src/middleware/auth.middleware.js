@@ -3,6 +3,17 @@ const { catchAsync } = require('../utils/helpers');
 const User = require('../models/user.model');
 const AppError = require('../utils/appError');
 
+exports.optionAuth = catchAsync(async (req, res, next) => {
+  const { userId } = getAuth(req);
+
+  if (!userId) return next();
+
+  const user = await User.findOne({ clerkId: userId });
+  req.user = user;
+  req.userId = userId;
+  next();
+});
+
 exports.protect = catchAsync(async (req, res, next) => {
   const { userId } = getAuth(req);
 
@@ -12,7 +23,7 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
 
   const user = await User.findOne({ clerkId: userId });
-  // req.user = user;
+  req.user = user;
   req.userId = userId;
   next();
 });
@@ -20,7 +31,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.checkRole = (...roles) => {
   return catchAsync(async (req, res, next) => {
     const {
-      publicMetadata: { role }
+      privateMetadata: { role }
     } = await clerkClient.users.getUser(req.userId);
 
     if (!roles.includes(role)) {

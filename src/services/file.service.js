@@ -23,9 +23,9 @@ class FileService {
     });
   }
 
-  async resizeImage(file) {
+  async resizeImage(file, width = 500, height = 500) {
     const byteBufferArray = await sharp(file.buffer)
-      .resize(500, 500)
+      .resize(width, height)
       .toFormat('jpg')
       .jpeg({ quality: 90 })
       .toBuffer();

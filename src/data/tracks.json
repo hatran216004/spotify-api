@@ -1,0 +1,57 @@
+[
+  {
+    "title": "Chạy ngay đi",
+    "imageUrl": "chay-ngay-di.jpg",
+    "artists": ["64d123456789abcdef000001"],
+    "albumId": "64dabcdef123456789000001",
+    "audioUrl": "https://res.cloudinary.com/dpokwvvad/video/upload/v1754801646/afdrcszbo8s1enfbecme.mp3",
+    "duration": 255,
+    "genres": ["pop"],
+    "playCount": 120345678,
+    "releaseDate": "2018-05-12T00:00:00.000Z"
+  },
+  {
+    "title": "Chúng Ta của hiện tại",
+    "imageUrl": "chung-ta-cua-hien-tai.jpg",
+    "artists": ["64d123456789abcdef000001"],
+    "albumId": "64dabcdef123456789000002",
+    "audioUrl": "https://res.cloudinary.com/dpokwvvad/video/upload/v1754801646/yxjzkrcpvapwsmrikyfx.mp3",
+    "duration": 292,
+    "genres": ["pop", "ballad"],
+    "playCount": 98765432,
+    "releaseDate": "2020-12-20T00:00:00.000Z"
+  },
+  {
+    "title": "Cô gái bàn bên",
+    "imageUrl": "co-gai-ban-ben.jpg",
+    "artists": ["64d123456789abcdef000002"],
+    "albumId": "64dabcdef123456789000003",
+    "audioUrl": "https://res.cloudinary.com/dpokwvvad/video/upload/v1754801645/itvszfsl5ielh5ppicdg.mp3",
+    "duration": 240,
+    "genres": ["rap", "pop"],
+    "playCount": 45000000,
+    "releaseDate": "2022-06-15T00:00:00.000Z"
+  },
+  {
+    "title": "Không phải dạng vừa đâu",
+    "imageUrl": "khong-phai-dang-vua-dau.jpg",
+    "artists": ["64d123456789abcdef000001"],
+    "albumId": "64dabcdef123456789000004",
+    "audioUrl": "https://res.cloudinary.com/dpokwvvad/video/upload/v1754801654/dykwkfjeangqdhjmhm4w.mp3",
+    "duration": 260,
+    "genres": ["pop"],
+    "playCount": 0,
+    "releaseDate": "2015-04-01T00:00:00.000Z"
+  },
+  {
+    "title": "Lối nhỏ",
+    "imageUrl": "loi-nho.jpg",
+    "artists": ["64d123456789abcdef000002"],
+    "albumId": "64dabcdef123456789000005",
+    "audioUrl": "https://res.cloudinary.com/dpokwvvad/video/upload/v1754801646/rluhitgorl6ghngorc9e.mp3",
+    "duration": 270,
+    "genres": ["rap", "ballad"],
+    "playCount": 50000000,
+    "releaseDate": "2019-09-20T00:00:00.000Z"
+  }
+]

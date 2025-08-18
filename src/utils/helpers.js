@@ -24,7 +24,6 @@ exports.fromLRC = (lrcContent) => {
 };
 
 exports.filterBody = (...body) => {
-  console.log(body);
   return (req, res, next) => {
     //
     next();

@@ -1,10 +1,10 @@
 const { catchAsync, sendSuccess } = require('../utils');
 const { lyricService } = require('../services');
 
-exports.getSongLyrics = catchAsync(async (req, res, next) => {
-  const lyricsOfSong = await lyricService.getSongLyrics(req.params.id);
-  sendSuccess(res, { lyrics: lyricsOfSong }, 200);
+exports.getTrackLyrics = catchAsync(async (req, res, next) => {
+  const lyricsOfTrack = await lyricService.getTrackLyrics(req.params.id);
+  sendSuccess(res, { lyrics: lyricsOfTrack }, 200);
 });
 
-exports.updateSongLyrics = catchAsync(async (req, res, next) => {});
-exports.deleteSongLyrics = catchAsync(async (req, res, next) => {});
+exports.updateTrackLyrics = catchAsync(async (req, res, next) => {});
+exports.deleteTrackLyrics = catchAsync(async (req, res, next) => {});

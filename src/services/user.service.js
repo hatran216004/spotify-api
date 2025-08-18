@@ -1,49 +1,46 @@
-const { PAGE_LIMIT } = require('../config/constants');
-const { User, Song } = require('../models');
-const ApiFeatures = require('../utils/apiFeatures');
+const { User } = require('../models');
+const AppError = require('../utils/appError');
 
 class UserService {
-  async getMeSongsLiked(userId, query) {
-    const user = await User.findById(userId).populate('likedSongs');
-    const likedSongIds = user.likedSongs.map((song) => song.id);
+  async getMeTracksLiked(userId) {
+    const user = await User.findById(userId).populate('likedTracks.trackId');
+    user.likedTracks.sort((a, b) => b.addedAt - a.addedAt);
 
-    const features = new ApiFeatures(
-      Song.find({ _id: { $in: likedSongIds } }),
-      query
-    )
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
+    const likedTracks = user.likedTracks.map((entry) => ({
+      track: entry.trackId,
+      addedAt: entry.addedAt
+    }));
 
-    const result = await features.query;
-
-    const likedSongsLength = likedSongIds.length;
-    const pageCount = Math.ceil(
-      likedSongsLength / (+query.limit || PAGE_LIMIT)
-    );
-
-    return { likedSongs: result, pageCount, currentPage: query.page || 1 };
+    return { likedTracks };
   }
 
-  async addSongToLiked(userId, songId) {
+  async addTrackToLiked(userId, trackId) {
+    const existing = await User.findOne({
+      _id: userId,
+      'likedTracks.trackId': trackId
+    });
+
+    if (existing) {
+      throw new AppError('Track existing in liked songs', 400);
+    }
+
     const userUpdated = await User.findByIdAndUpdate(
       userId,
       {
-        $addToSet: { likedSongs: songId }
+        $push: { likedTracks: { trackId } }
       },
       { new: true }
-    ).populate('likedSongs');
+    ).populate('likedTracks.trackId');
 
-    const likedSong = userUpdated.likedSongs.find(
-      (song) => song._id.toString() === songId
+    const likedTrack = userUpdated.likedTracks.find(
+      (entry) => entry.trackId._id.toString() === trackId
     );
-    return likedSong;
+    return likedTrack;
   }
 
-  async removeSongFromLiked(userId, songId) {
+  async removeTrackFromLiked(userId, trackId) {
     await User.findByIdAndUpdate(userId, {
-      $pull: { likedSongs: songId }
+      $pull: { likedTracks: { trackId } }
     });
 
     return null;

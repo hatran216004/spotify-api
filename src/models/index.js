@@ -1,15 +1,19 @@
-const Song = require('./song.model');
+const Track = require('./track.model');
 const Album = require('./album.model');
 const Artist = require('./artist.model');
 const Playlist = require('./playlist.model');
 const User = require('./user.model');
 const Lyric = require('./lyric.model');
+const CurrentPlayback = require('./currentPlayback.model');
+const UserFollows = require('./user_follows.model');
 
 module.exports = {
-  Song,
+  Track,
   Album,
   Artist,
   Playlist,
   User,
-  Lyric
+  Lyric,
+  CurrentPlayback,
+  UserFollows
 };

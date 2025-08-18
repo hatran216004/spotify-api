@@ -1,14 +1,14 @@
 const express = require('express');
 
 const {
-  createSong,
-  uploadSongFiles,
-  resizeAndUploadSongImg,
-  uploadSongAudio,
-  updateSong,
-  deleteSong,
+  createTrack,
+  uploadTrackFiles,
+  resizeAndUploadTrackImg,
+  uploadTrackAudio,
+  updateTrack,
+  deleteTrack,
   parseLyricsContent
-} = require('../controllers/song.controller');
+} = require('../controllers/track.controller');
 
 const {
   createArtist,
@@ -25,18 +25,25 @@ const {
   uploadAlbumCoverImg,
   resizeAndUploadAlbumImg
 } = require('../controllers/album.controller');
+const { protect, checkRole } = require('../middleware/auth.middleware');
+const { getAllUsers, deleteUser } = require('../controllers/user.controller');
 
 const router = express.Router();
 
+// router.use(protect, checkRole('admin'));
+
 router.post(
-  '/songs',
-  uploadSongFiles,
-  resizeAndUploadSongImg,
-  uploadSongAudio,
+  '/tracks',
+  uploadTrackFiles,
+  resizeAndUploadTrackImg,
+  uploadTrackAudio,
   parseLyricsContent,
-  createSong
+  createTrack
 );
-router.route('/songs/:id').patch(updateSong).delete(deleteSong);
+router
+  .route('/tracks/:id')
+  .patch(uploadTrackFiles, resizeAndUploadTrackImg, updateTrack)
+  .delete(deleteTrack);
 
 router.post('/artists', uploadFilesImg, resizeAndUploadImg, createArtist);
 router
@@ -49,5 +56,9 @@ router
   .route('/albums/:id')
   .patch(uploadAlbumCoverImg, resizeAndUploadAlbumImg, updateAlbum)
   .delete(deleteAlbum);
+
+// User
+router.get('/users', getAllUsers);
+router.delete('/users/:id', deleteUser);
 
 module.exports = router;

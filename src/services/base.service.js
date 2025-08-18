@@ -22,12 +22,19 @@ class BaseService {
     return { doc, modelName };
   }
 
-  async getAll(Model, query) {
+  async getAll(Model, query, popOptions) {
     const features = new ApiFeatures(Model.find(), query)
       .filter()
       .sort()
       .limitFields()
       .paginate();
+
+    if (popOptions) {
+      features.query = features.query.populate({
+        path: popOptions.path,
+        select: popOptions.select
+      });
+    }
 
     const data = await features.query;
 

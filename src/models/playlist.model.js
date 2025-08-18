@@ -9,22 +9,28 @@ const playlistSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      required: [true, 'A playlist must have a userId']
+      required: [true, 'A playlist must have a userId'],
+      alias: 'user'
     },
     isPublic: {
       type: Boolean,
       default: true
     },
-    songs: [
+    tracks: [
       {
-        songId: {
+        trackId: {
           type: mongoose.Schema.ObjectId,
-          ref: 'Song'
+          ref: 'Track',
+          alias: 'track'
         },
         order: {
           type: Number,
-          required: [true, 'Song need order field for drag and drop'],
+          required: [true, 'Track need order field for reorder tracks'],
           min: 0
+        },
+        addedAt: {
+          type: Date,
+          default: Date.now
         }
       }
     ],
@@ -36,14 +42,37 @@ const playlistSchema = new mongoose.Schema(
     description: String
   },
   {
-    timestamps: true
+    timestamps: true,
+    toJSON: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        ret.user = ret.userId;
+        delete ret.userId;
+
+        ret.tracks = ret.tracks.map((t) => {
+          t.track = t.trackId;
+          delete t.trackId;
+          return t;
+        });
+        return ret;
+      }
+    },
+    toObject: {
+      virtuals: true,
+      transform: function (doc, ret) {
+        ret.user = ret.userId;
+        delete ret.userId;
+
+        ret.tracks = ret.tracks.map((t) => {
+          t.track = t.trackId;
+          delete t.trackId;
+          return t;
+        });
+        return ret;
+      }
+    }
   }
 );
-
-playlistSchema.pre(/^find/, function (next) {
-  this.populate('songs');
-  next();
-});
 
 const Playlist = mongoose.model('Playlist', playlistSchema);
 module.exports = Playlist;
