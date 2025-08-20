@@ -1,11 +1,13 @@
 const express = require('express');
 const {
   callbackLogin,
-  callbackRegister
+  callbackRegister,
+  callbackSSO
 } = require('../controllers/auth.controller');
 
 const router = express.Router();
 
+router.post('/callback-sso', callbackSSO);
 router.post('/callback-register', callbackRegister);
 router.post('/callback-login', callbackLogin);
 
