@@ -15,9 +15,11 @@ exports.optionAuth = catchAsync(async (req, res, next) => {
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
-  const { userId } = getAuth(req);
+  const { getToken, userId } = getAuth(req);
 
-  if (!userId)
+  const token = await getToken();
+
+  if (!token)
     return next(
       new AppError('You are not logged in ! Please log in to access.', 401)
     );
