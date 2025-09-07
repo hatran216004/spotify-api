@@ -28,7 +28,8 @@ const {
   repeatPlayback,
   seekPlayback,
   shufflePlayback,
-  volumePlayback
+  volumePlayback,
+  getPlaybackContext
 } = require('../controllers/player.controller');
 const { getFollowedArtists } = require('../controllers/artist.controller');
 
@@ -65,11 +66,14 @@ router.get('/artists/followed', getFollowedArtists);
 
 // Player
 router.get('/player', getCurrentPlayback);
+router.get('/player/context/:id/:type', getPlaybackContext);
 router.patch('/player/play', startPlayback);
 router.patch('/player/pause', pausePlayback);
 router.patch('/player/repeat', repeatPlayback);
 router.patch('/player/seek', seekPlayback);
 router.patch('/player/volume', volumePlayback);
 router.patch('/player/shuffle', shufflePlayback);
+
+// Context
 
 module.exports = router;

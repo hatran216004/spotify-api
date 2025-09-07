@@ -4,10 +4,10 @@ const {
   getAll,
   updateOne
 } = require('./base.controller');
-const { Artist, Track, UserFollows } = require('../models');
+const { Artist, UserFollows } = require('../models');
 const { catchAsync, sendSuccess } = require('../utils');
 const { upload } = require('../middleware/fileUpload.middleware');
-const { fileService } = require('../services');
+const { fileService, artistService } = require('../services');
 const AppError = require('../utils/appError');
 
 exports.uploadFilesImg = upload.fields([
@@ -51,14 +51,7 @@ exports.getPopularArtists = catchAsync(async (req, res, next) => {
 
 exports.getArtistPopularTracks = catchAsync(async (req, res, next) => {
   const { id: artistId } = req.params;
-  if (!artistId) {
-    return next(new AppError('Artist Id is required', 400));
-  }
-
-  // lean: trả về plain JavaScript object để có thể xóa artists
-  const tracks = await Track.find({ artists: artistId })
-    .sort('-playCount')
-    .limit(10);
+  const tracks = await artistService.getPopularTracks(artistId);
 
   sendSuccess(res, { tracks }, 200);
 });

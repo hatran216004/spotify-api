@@ -28,6 +28,7 @@
       { "argsIgnorePattern": "req|res|val|next|err" }
     ],
     "prefer-arrow-callback": "off",
-    "prefer-const": "off"
+    "prefer-const": "off",
+    "no-case-declarations": "off"
   }
 }

@@ -36,7 +36,7 @@ const currentPlaybackSchema = new mongoose.Schema(
     },
     repeatMode: {
       type: String,
-      enum: ['off', 'track', 'playlist'],
+      enum: ['off', 'track', 'context'],
       default: 'off'
     },
     playlistId: {

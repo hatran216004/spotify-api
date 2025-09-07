@@ -1,8 +1,56 @@
-const { Track } = require('../models');
-const { playerServices } = require('../services');
+const { CONTEXT_TYPE } = require('../config/constants');
+const { Track, Playlist, Album } = require('../models');
+const { playerServices, artistService, userService } = require('../services');
 const { sendSuccess } = require('../utils');
 const AppError = require('../utils/appError');
 const { catchAsync } = require('../utils/helpers');
+
+exports.getPlaybackContext = catchAsync(async (req, res, next) => {
+  const { id, type } = req.params;
+
+  if (!id) {
+    return next(new AppError('Context Id is required', 400));
+  }
+
+  let tracks = [];
+  let playbackContext = {
+    type,
+    id,
+    tracks,
+    totalTracks: 0
+  };
+
+  switch (type) {
+    case CONTEXT_TYPE.PLAYLIST:
+      const playlist = await Playlist.findById(id).populate('tracks.trackId');
+      tracks = playlist.tracks.map((ele) => ele.track) || [];
+      break;
+    case CONTEXT_TYPE.ALBUM:
+      const album = await Album.findById(id).populate('tracks');
+      tracks = album.tracks;
+      break;
+    case CONTEXT_TYPE.ARTIST:
+      tracks = await artistService.getPopularTracks(id);
+      break;
+    case CONTEXT_TYPE.LIKED_TRACKS:
+      const likedTracks = await userService.getMeTracksLiked(req.user.id);
+      tracks = likedTracks.map((ele) => ele.track);
+      break;
+    case CONTEXT_TYPE.QUEUE:
+      break;
+    case CONTEXT_TYPE.SEARCH:
+      const track = await Track.findById(id);
+      tracks = [track];
+      break;
+    default:
+      break;
+  }
+
+  playbackContext.tracks = tracks;
+  playbackContext.totalTracks = tracks.length;
+
+  sendSuccess(res, { playbackContext }, 200);
+});
 
 exports.startPlayback = catchAsync(async (req, res, next) => {
   const userId = req.user.id;

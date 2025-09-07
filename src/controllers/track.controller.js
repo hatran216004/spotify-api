@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-unresolved, node/no-missing-require
+const { parseBuffer } = require('music-metadata');
 const { upload } = require('../middleware/fileUpload.middleware');
 const { Track } = require('../models');
 const { catchAsync, sendSuccess } = require('../utils');
@@ -15,20 +17,28 @@ exports.uploadTrackFiles = upload.fields([
 ]);
 
 exports.uploadTrackAudio = catchAsync(async (req, res, next) => {
-  const audio = req.files.audio?.[0];
+  const audio = req.files?.audio?.[0];
   if (audio) {
+    const buffer = audio.buffer;
+    const {
+      common: { genre, title },
+      format: { duration }
+    } = await parseBuffer(buffer);
+
     const audioUrl = await fileService.uploadToCloudinary({
-      buffer: audio.buffer,
+      buffer: buffer,
       folderToUpload: 'tracks/audio'
     });
     req.body.audioUrl = audioUrl;
+    req.body.genres = genre;
+    req.body.title = title;
+    req.body.duration = duration;
   }
   next();
 });
 
 exports.resizeAndUploadTrackImg = catchAsync(async (req, res, next) => {
-  const image = req.files.image?.[0];
-
+  const image = req.files?.image?.[0];
   if (image) {
     const byteBufferArray = await fileService.resizeImage(image);
     const imageUrl = await fileService.uploadToCloudinary({
@@ -41,7 +51,7 @@ exports.resizeAndUploadTrackImg = catchAsync(async (req, res, next) => {
 });
 
 exports.parseLyricsContent = (req, res, next) => {
-  const lyrics = req.files.lyrics?.[0];
+  const lyrics = req.files?.lyrics?.[0];
   if (lyrics) {
     const lyricsContent = lyrics.buffer.toString('utf-8').trim();
     const lrcToJSON = fromLRC(lyricsContent);
@@ -56,6 +66,7 @@ exports.createTrack = catchAsync(async (req, res, next) => {
     trackId: track.id,
     content: req.body.lyrics
   });
+
   sendSuccess(res, { track }, 201);
 });
 

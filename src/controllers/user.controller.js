@@ -8,10 +8,7 @@ const { userService } = require('../services');
 exports.uploadFilesImg = upload.single('avatarUrl');
 
 exports.getMeTracksLiked = catchAsync(async (req, res, next) => {
-  const { likedTracks } = await userService.getMeTracksLiked(
-    req.user.id,
-    req.query
-  );
+  const likedTracks = await userService.getMeTracksLiked(req.user.id);
   sendSuccess(res, { tracks: likedTracks }, 200);
 });
 

@@ -11,7 +11,7 @@ class UserService {
       addedAt: entry.addedAt
     }));
 
-    return { likedTracks };
+    return likedTracks;
   }
 
   async addTrackToLiked(userId, trackId) {
