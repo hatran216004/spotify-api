@@ -84,6 +84,14 @@ exports.getMadeForYouTracks = catchAsync(async (req, res, next) => {
   const tracks = await Track.aggregate([
     {
       $sample: { size: 8 }
+    },
+    {
+      $lookup: {
+        from: 'artists',
+        localField: 'artists',
+        foreignField: '_id',
+        as: 'artists'
+      }
     }
   ]);
   sendSuccess(res, { tracks }, 200);
