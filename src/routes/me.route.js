@@ -1,23 +1,18 @@
 const express = require('express');
 const { protect } = require('../middleware/auth.middleware');
 const {
-  getMyPlaylists,
+  getPlaylistUserLibrary,
   deletePlaylist,
-  updatePlaylist,
   addTrackToPlaylist,
   removeTrackFromPlaylist,
   reorderPlaylist,
-  uploadCoverImage,
   createMyPlaylist
 } = require('../controllers/playlist.controller');
 
 const {
   getMe,
   updateMe,
-  uploadFilesImg,
-  getMeTracksLiked,
-  addTrackToLiked,
-  removeTrackFromLiked
+  uploadFilesImg
 } = require('../controllers/user.controller');
 const { resizeAndUploadImg } = require('../middleware/fileUpload.middleware');
 
@@ -32,25 +27,13 @@ const {
   getPlaybackContext
 } = require('../controllers/player.controller');
 const { getFollowedArtists } = require('../controllers/artist.controller');
+const { getMeTracksLiked } = require('../controllers/track.controller');
+
+const { getUserFollowAlbums } = require('../controllers/album.controller');
 
 const router = express.Router();
 
 router.use(protect);
-
-// Playlist
-router.route('/playlists').get(getMyPlaylists).post(createMyPlaylist);
-router
-  .route('/playlists/:id')
-  .delete(deletePlaylist)
-  .patch(
-    uploadCoverImage,
-    resizeAndUploadImg('tracks/images', 'coverImage'),
-    updatePlaylist
-  );
-
-router.patch('/playlists/:id/reorder', reorderPlaylist);
-router.patch('/playlists/:id/tracks', addTrackToPlaylist);
-router.delete('/playlists/:id/tracks/:trackId', removeTrackFromPlaylist);
 
 // Track
 router
@@ -58,8 +41,18 @@ router
   .get(getMe)
   .patch(uploadFilesImg, resizeAndUploadImg('users', 'avatarUrl'), updateMe);
 
-router.route('/liked-tracks').get(getMeTracksLiked).patch(addTrackToLiked);
-router.delete('/liked-tracks/:trackId', removeTrackFromLiked);
+router.get('/tracks/liked', getMeTracksLiked);
+
+// Playlist
+router.route('/playlists').get(getPlaylistUserLibrary).post(createMyPlaylist);
+router.route('/playlists/:id').delete(deletePlaylist);
+
+router.patch('/playlists/:id/reorder', reorderPlaylist);
+router.patch('/playlists/:id/tracks', addTrackToPlaylist);
+router.delete('/playlists/:id/tracks/:trackId', removeTrackFromPlaylist);
+
+// Albums
+router.get('/albums', getUserFollowAlbums);
 
 // Artist
 router.get('/artists/followed', getFollowedArtists);

@@ -6,6 +6,7 @@ const User = require('./user.model');
 const Lyric = require('./lyric.model');
 const CurrentPlayback = require('./currentPlayback.model');
 const UserFollows = require('./user_follows.model');
+const UserLibrary = require('./userLibrary.model');
 
 module.exports = {
   Track,
@@ -15,5 +16,6 @@ module.exports = {
   User,
   Lyric,
   CurrentPlayback,
-  UserFollows
+  UserFollows,
+  UserLibrary
 };

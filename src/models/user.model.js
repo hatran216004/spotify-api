@@ -18,22 +18,6 @@ const userSchema = new mongoose.Schema(
       required: [true, 'A user must have a username'],
       unique: true
     },
-    likedTracks: {
-      type: [
-        {
-          trackId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Track',
-            alias: 'track'
-          },
-          addedAt: {
-            type: Date,
-            default: Date.now
-          }
-        }
-      ],
-      default: []
-    },
     avatarUrl: String,
     clerkId: {
       type: String,

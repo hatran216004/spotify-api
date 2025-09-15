@@ -9,6 +9,7 @@ const fileService = require('./file.service');
 const statService = require('./stat.service');
 const searchService = require('./search.service');
 const playerServices = require('./player.service');
+const userLibraryServices = require('./library.service');
 
 module.exports = {
   trackService,
@@ -21,5 +22,6 @@ module.exports = {
   fileService,
   statService,
   searchService,
-  playerServices
+  playerServices,
+  userLibraryServices
 };

@@ -11,8 +11,7 @@ const albumSchema = new mongoose.Schema(
     artistId: {
       type: mongoose.Schema.ObjectId,
       ref: 'Artist',
-      required: [true, 'A album must have a artistId'],
-      alias: 'artist'
+      required: [true, 'A album must have a artist ID']
     },
     releaseDate: Date,
     coverImage: {
@@ -23,24 +22,17 @@ const albumSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-    toJSON: {
-      virtuals: true,
-      transform: function (doc, ret) {
-        ret.artist = ret.artistId;
-        delete ret.artistId;
-        return ret;
-      }
-    },
-    toObject: {
-      virtuals: true,
-      transform: function (doc, ret) {
-        ret.artist = ret.artistId;
-        delete ret.artistId;
-        return ret;
-      }
-    }
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true }
   }
 );
+
+albumSchema.virtual('artist', {
+  ref: 'Artist',
+  localField: 'artistId',
+  foreignField: '_id',
+  justOne: true
+});
 
 albumSchema.virtual('tracks', {
   ref: 'Track',

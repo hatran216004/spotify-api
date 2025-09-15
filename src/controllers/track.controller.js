@@ -5,7 +5,12 @@ const { Track } = require('../models');
 const { catchAsync, sendSuccess } = require('../utils');
 const { deleteOne, updateOne } = require('./base.controller');
 const { fromLRC } = require('../utils');
-const { trackService, lyricService, fileService } = require('../services');
+const {
+  trackService,
+  lyricService,
+  fileService,
+  userLibraryServices
+} = require('../services');
 const ApiFeatures = require('../utils/apiFeatures');
 const { PAGE_LIMIT } = require('../config/constants');
 const AppError = require('../utils/appError');
@@ -79,14 +84,6 @@ exports.getMadeForYouTracks = catchAsync(async (req, res, next) => {
   const tracks = await Track.aggregate([
     {
       $sample: { size: 8 }
-    },
-    {
-      $lookup: {
-        from: 'artists',
-        localField: 'artists',
-        foreignField: '_id',
-        as: 'artists'
-      }
     }
   ]);
   sendSuccess(res, { tracks }, 200);
@@ -99,9 +96,7 @@ exports.getAllTracks = catchAsync(async (req, res, next) => {
     .limitFields()
     .paginate();
 
-  const data = await features.query
-    .populate('artists', 'name')
-    .populate('albumId', 'title');
+  const data = await features.query.populate('album', 'title');
   const countDocs = await Track.countDocuments();
   const pageCount = Math.ceil(countDocs / (+req.query.limit || PAGE_LIMIT));
 
@@ -116,12 +111,39 @@ exports.getAllTracks = catchAsync(async (req, res, next) => {
 });
 exports.getTrack = catchAsync(async (req, res, next) => {
   const { id } = req.params;
-  const track = await Track.findById(id).populate('albumId', 'title');
+  const track = await Track.findById(id).populate('album', 'title');
 
   if (!track) {
     throw new AppError(`No track found with id: ${id}`, 404);
   }
   sendSuccess(res, { track }, 200);
+});
+
+exports.getMeTracksLiked = catchAsync(async (req, res, next) => {
+  const { items, pagination } = await userLibraryServices.getTracks(
+    req.user.id,
+    req.query
+  );
+
+  sendSuccess(res, { items, pagination }, 200);
+});
+
+exports.addTrackToLiked = catchAsync(async (req, res, next) => {
+  const userId = req.user.id;
+  const trackId = req.params.id;
+
+  const item = await userLibraryServices.addTrack(userId, trackId);
+
+  sendSuccess(res, { item }, 200);
+});
+
+exports.removeTrackFromLiked = catchAsync(async (req, res, next) => {
+  const userId = req.user.id;
+  const trackId = req.params.id;
+
+  await userLibraryServices.removeTrack(userId, trackId);
+
+  sendSuccess(res, null, 204);
 });
 
 exports.updateTrack = updateOne(Track);

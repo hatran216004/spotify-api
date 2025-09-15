@@ -1,6 +1,10 @@
 const { CONTEXT_TYPE } = require('../config/constants');
 const { Track, Playlist, Album } = require('../models');
-const { playerServices, artistService, userService } = require('../services');
+const {
+  playerServices,
+  artistService,
+  userLibraryServices
+} = require('../services');
 const { sendSuccess } = require('../utils');
 const AppError = require('../utils/appError');
 const { catchAsync } = require('../utils/helpers');
@@ -33,8 +37,11 @@ exports.getPlaybackContext = catchAsync(async (req, res, next) => {
       tracks = await artistService.getPopularTracks(id);
       break;
     case CONTEXT_TYPE.LIKED_TRACKS:
-      const likedTracks = await userService.getMeTracksLiked(req.user.id);
-      tracks = likedTracks.map((ele) => ele.track);
+      const { items } = await userLibraryServices.getTracks(
+        req.user.id,
+        req.query
+      );
+      tracks = items.map((ele) => ele.track);
       break;
     case CONTEXT_TYPE.QUEUE:
       break;

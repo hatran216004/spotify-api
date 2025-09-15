@@ -1,26 +1,7 @@
-const { PAGE_LIMIT } = require('../config/constants');
 const { Playlist, Track } = require('../models');
-const ApiFeatures = require('../utils/apiFeatures');
 const AppError = require('../utils/appError');
 
 class PlaylistService {
-  async getMyPlaylists(userId, query) {
-    const features = new ApiFeatures(Playlist.find({ userId }), query)
-      .filter()
-      .sort()
-      .limitFields()
-      .paginate();
-
-    const playlists = await features.query.populate('userId', 'username');
-    const countDocs = await Playlist.countDocuments();
-    const pageCount = Math.ceil(countDocs / (+query.limit || PAGE_LIMIT));
-
-    return {
-      playlists,
-      pagination: { pageCount, currentPage: query.page || 1 }
-    };
-  }
-
   async addTrackToPlaylist(playlistId, trackId) {
     const playlist = await Playlist.findById(playlistId);
 
@@ -31,7 +12,7 @@ class PlaylistService {
 
     if (!track) throw new AppError(`No track found with id: ${trackId}`, 404);
 
-    const alreadyExists = playlist.tracks.some(
+    const alreadyExists = playlist.tracks.find(
       (entry) => entry.track._id.toString() === trackId.toString()
     );
     if (alreadyExists) {
@@ -101,6 +82,16 @@ class PlaylistService {
     };
     const playlist = await Playlist.create(data);
     return playlist;
+  }
+
+  async deleteOne(userId, playlistId) {
+    const playlist = await Playlist.findById(playlistId);
+
+    if (playlist.userId.toString() !== userId) {
+      throw new AppError('Can not delete playlist of another user', 400);
+    }
+    await Playlist.deleteOne(playlistId);
+    return null;
   }
 
   async reorderPlaylist(playlistId, reorderData) {

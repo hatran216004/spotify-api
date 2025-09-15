@@ -9,8 +9,7 @@ const playlistSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      required: [true, 'A playlist must have a userId'],
-      alias: 'user'
+      required: [true, 'A playlist must have a user ID']
     },
     isPublic: {
       type: Boolean,
@@ -46,33 +45,38 @@ const playlistSchema = new mongoose.Schema(
     toJSON: {
       virtuals: true,
       transform: function (doc, ret) {
-        ret.user = ret.userId;
-        delete ret.userId;
-
-        ret.tracks = ret.tracks.map((t) => {
-          t.track = t.trackId;
-          delete t.trackId;
-          return t;
-        });
+        if (ret.tracks) {
+          ret.tracks = ret.tracks.map((t) => {
+            t.track = t.trackId;
+            delete t.trackId;
+            return t;
+          });
+        }
         return ret;
       }
     },
     toObject: {
       virtuals: true,
       transform: function (doc, ret) {
-        ret.user = ret.userId;
-        delete ret.userId;
-
-        ret.tracks = ret.tracks.map((t) => {
-          t.track = t.trackId;
-          delete t.trackId;
-          return t;
-        });
+        if (ret.tracks) {
+          ret.tracks = ret.tracks.map((t) => {
+            t.track = t.trackId;
+            delete t.trackId;
+            return t;
+          });
+        }
         return ret;
       }
     }
   }
 );
+
+playlistSchema.virtual('user', {
+  ref: 'User',
+  localField: 'userId',
+  foreignField: '_id',
+  justOne: true
+});
 
 const Playlist = mongoose.model('Playlist', playlistSchema);
 module.exports = Playlist;

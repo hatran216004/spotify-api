@@ -6,8 +6,7 @@ const lyricSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: 'Track',
       required: [true, 'Lyrics should belong to the track'],
-      unique: true,
-      alias: 'track'
+      unique: true
     },
     content: {
       type: [

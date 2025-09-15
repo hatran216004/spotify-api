@@ -26,7 +26,6 @@ exports.protect = catchAsync(async (req, res, next) => {
 
   const user = await User.findOne({ clerkId: userId });
   req.user = user;
-  req.userId = userId;
   next();
 });
 
@@ -34,7 +33,7 @@ exports.checkRole = (...roles) => {
   return catchAsync(async (req, res, next) => {
     const {
       privateMetadata: { role }
-    } = await clerkClient.users.getUser(req.userId);
+    } = await clerkClient.users.getUser(req.user.clerkId);
 
     if (!roles.includes(role)) {
       return next(new AppError('Access denied', 403));

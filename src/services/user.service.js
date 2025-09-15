@@ -32,10 +32,10 @@ class UserService {
       { new: true }
     ).populate('likedTracks.trackId');
 
-    const likedTrack = userUpdated.likedTracks.find(
+    const likedTracks = userUpdated.likedTracks.find(
       (entry) => entry.trackId._id.toString() === trackId
     );
-    return likedTrack;
+    return likedTracks;
   }
 
   async removeTrackFromLiked(userId, trackId) {

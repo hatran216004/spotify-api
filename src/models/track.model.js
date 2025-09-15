@@ -22,8 +22,7 @@ const trackSchema = new mongoose.Schema(
     albumId: {
       type: mongoose.Schema.ObjectId,
       ref: 'Album',
-      required: [true, 'A track must have a albumId'],
-      alias: 'album'
+      required: [true, 'A track must have a albumId']
     },
     audioUrl: {
       type: String,
@@ -55,23 +54,20 @@ const trackSchema = new mongoose.Schema(
   {
     timestamps: true,
     toJSON: {
-      virtuals: true,
-      transform: function (doc, ret) {
-        ret.album = ret.albumId;
-        delete ret.albumId;
-        return ret;
-      }
+      virtuals: true
     },
     toObject: {
-      virtuals: true,
-      transform: function (doc, ret) {
-        ret.album = ret.albumId;
-        delete ret.albumId;
-        return ret;
-      }
+      virtuals: true
     }
   }
 );
+
+trackSchema.virtual('album', {
+  ref: 'Album',
+  foreignField: '_id',
+  localField: 'albumId',
+  justOne: true
+});
 
 trackSchema.pre(/^find/, function (next) {
   this.populate('artists');

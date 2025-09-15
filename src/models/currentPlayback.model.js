@@ -5,14 +5,12 @@ const currentPlaybackSchema = new mongoose.Schema(
     userId: {
       type: mongoose.Schema.ObjectId,
       required: [true, 'userId is required'],
-      ref: 'User',
-      alias: 'user'
+      ref: 'User'
     },
     trackId: {
       type: mongoose.Schema.ObjectId,
       required: [true, 'trackId is required'],
-      ref: 'Track',
-      alias: 'track'
+      ref: 'Track'
     },
     progress: {
       type: Number,
@@ -42,7 +40,6 @@ const currentPlaybackSchema = new mongoose.Schema(
     playlistId: {
       type: mongoose.Schema.ObjectId,
       ref: 'Playlist',
-      alias: 'playlist',
       default: null
     },
     contextType: {
@@ -61,7 +58,7 @@ const currentPlaybackSchema = new mongoose.Schema(
 );
 
 const CurrentPlayback = mongoose.model(
-  'CurrentPlayback',
+  'Current_Playback',
   currentPlaybackSchema
 );
 

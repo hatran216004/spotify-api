@@ -60,7 +60,7 @@ exports.getFollowedArtists = catchAsync(async (req, res, next) => {
   const userId = req.user.id;
   const userFollows = await UserFollows.find({ userId })
     .select('artistId')
-    .populate('artistId', 'name avatarUrl');
+    .populate('artistId');
 
   const artistFollows = userFollows.map((entry) => entry.artistId);
 
