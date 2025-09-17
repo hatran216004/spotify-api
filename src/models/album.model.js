@@ -48,5 +48,10 @@ albumSchema.post('findOneAndDelete', async function (doc) {
   await Lyric.deleteMany({ trackId: { $in: trackIds } });
 });
 
+albumSchema.pre(/^find/, function (next) {
+  this.populate('artist');
+  next();
+});
+
 const Album = mongoose.model('Album', albumSchema);
 module.exports = Album;

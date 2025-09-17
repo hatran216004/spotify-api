@@ -2,6 +2,7 @@ require('dotenv').config({ path: './config.env' });
 const mongoose = require('mongoose');
 
 const app = require('./app');
+const client = require('./lib/redis');
 
 // Xử lý lỗi đồng bộ (trong ứng dụng chưa được xử lý)
 process.on('uncaughtException', (err) => {
@@ -16,6 +17,10 @@ const db = process.env.DATABASE.replace(
 );
 
 mongoose.connect(db).then(() => console.log('db connected'));
+
+(async () => {
+  await client.connect();
+})();
 
 const PORT = process.env.PORT;
 
