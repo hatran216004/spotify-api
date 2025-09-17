@@ -1,4 +1,4 @@
-const morgan = require('morgan');
+// const morgan = require('morgan');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
@@ -35,9 +35,9 @@ app.use(cookieParser());
 
 app.use(clerkMiddleware());
 
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+// if (process.env.NODE_ENV === 'development') {
+//   app.use(morgan('dev'));
+// }
 
 app.use('/api/v1/users', userRoutes);
 app.use('/api/v1/auth', authRoutes);
